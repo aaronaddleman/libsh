@@ -11,7 +11,7 @@ that I think are helpful:
 1. Generating a certificate
 1. Running jupyterlabs_boot.sh with VS Code server
 1. Mounting libsh as a volume
-1. Using $1 as your workdir
+1. Using \$1 as your workdir
 
 ...shell
 juypter_labs_docker_base path/to/work/on
