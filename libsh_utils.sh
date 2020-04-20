@@ -53,9 +53,8 @@ libsh__debug() {
 
 libsh__help_doc() {
     echo $1 | sed -e 's/\.\.\./```/g'
-    echo " "
-    echo " "
-    echo "----"
+    echo -e "\n"
+    echo -e "\n"
 }
 
 # libsh__random_string

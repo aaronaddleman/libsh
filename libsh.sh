@@ -60,7 +60,11 @@ libsh__load() {
             # var name
             local fn_varname="LIBSH_status_fn_${fn}"
             # load the FNs
-            [[ "${mode}" == "fn" ]] && [ -f ${LIBSH_HOME}/${fn}.sh ] && libsh__debug "FN  Loading '${LIBSH_HOME}/${fn}.sh'" && source ${LIBSH_HOME}/${fn}.sh && printf -v "$fn_varname" '%s' "loaded"
+            [[ "${mode}" == "fn" ]] && \
+                [ -f ${LIBSH_HOME}/${fn}.sh ] && \
+                source ${LIBSH_HOME}/${fn}.sh && \
+                printf -v "$fn_varname" '%s' "loaded" && \
+                libsh__debug "FN  Loaded '${LIBSH_HOME}/${fn}.sh'"
 
 
             # debug and show what we load for ${FN}.env.sh
@@ -68,7 +72,7 @@ libsh__load() {
             # var name
             local env_varname="LIBSH_status_env_${fn}"
             # load the FNs envs
-            [[ "${mode}" == "env" ]] && [ -f ${LIBSH_HOME}/${fn}.env.sh ] && libsh__debug "ENV  Loading '${LIBSH_HOME}/${fn}.env.sh'" && source ${LIBSH_HOME}/${fn}.env.sh && printf -v "$env_varname" '%s' "loaded"
+            [[ "${mode}" == "env" ]] && [ -f ${LIBSH_HOME}/${fn}.env.sh ] && source ${LIBSH_HOME}/${fn}.env.sh && printf -v "$env_varname" '%s' "loaded" && libsh__debug "ENV  Loading '${LIBSH_HOME}/${fn}.env.sh'"
         done
         export LIBSH_STATUS=t
     else
