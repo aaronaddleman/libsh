@@ -5,7 +5,7 @@ terragrunt_install_tgenv() {
 ## terragrunt_install_tgenv
 
 To install tgenv and help manage Terragrunt versions.
-This will get installed to your $HOME/.tgenv directory. Once installed, reload your
+This will get installed to your '$HOME'/.tgenv directory. Once installed, reload your
 shell environment.
 
 HELP

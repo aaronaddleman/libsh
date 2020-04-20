@@ -108,7 +108,7 @@ WORK IN PROGRESS
 ## terraform_install_tfenv
 
 To install tfenv and help manage Terraform versions.
-This will get installed to your /home/addlema/.tfenv directory. Once installed, reload your
+This will get installed to your '/home/addlema'/.tfenv directory. Once installed, reload your
 shell environment.
 
 
@@ -117,7 +117,7 @@ shell environment.
 ## terragrunt_install_tgenv
 
 To install tgenv and help manage Terragrunt versions.
-This will get installed to your /home/addlema/.tgenv directory. Once installed, reload your
+This will get installed to your '/home/addlema'/.tgenv directory. Once installed, reload your
 shell environment.
 
 

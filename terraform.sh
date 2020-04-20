@@ -4,7 +4,7 @@ terraform_install_tfenv() {
 ## terraform_install_tfenv
 
 To install tfenv and help manage Terraform versions.
-This will get installed to your $HOME/.tfenv directory. Once installed, reload your
+This will get installed to your '$HOME'/.tfenv directory. Once installed, reload your
 shell environment.
 
 HELP
