@@ -33,3 +33,7 @@ HELP
     libsh__exit_with_message "ERR" "Missing file for git commit template"
 
 [ ! -z $ENABLE_GIT_COMMIT_TEMLPATE ] && git config --global commit.template $ENABLE_GIT_COMMIT_TEMPLATE
+
+git_remove_local_not_master() {
+    git branch | grep -v "master" | xargs git branch -D
+}
