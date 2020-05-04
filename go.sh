@@ -19,5 +19,7 @@ HELP
         go get -u github.com/haya14busa/gopkgs/cmd/gopkgs
         go get -u -v github.com/davidrjenni/reftools/cmd/fillstruct
         go get -u github.com/josharian/impl
+        go get -u -v github.com/alecthomas/gometalinter
+        gometalinter --install --update
     fi
 }
