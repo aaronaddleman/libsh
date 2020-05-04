@@ -156,3 +156,66 @@ HELP
     sudo curl -SsL https://github.com/cdr/code-server/releases/download/3.1.1/code-server-3.1.1-linux-x86_64.tar.gz | sudo tar -C /usr/local/lib -xzf -
     sudo ln -s /usr/local/lib/code-server/bin/code-server /usr/local/bin/code-server
 }
+
+
+
+jupyter_labs_vscode() {
+    local help=$(cat <<HELP
+## jupyter_labs_vscode
+
+Start a jupyterlabs with vscode as well. Takes one arg of your workdir.
+Additional vars are available in the jupyer_launch function.
+
+...shell
+jupyter_labs_vscode /path/to/your/project
+...
+
+HELP
+          )
+    [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
+    export JUPYTER_WORKDIR=$1
+    export JUPYTER_ENABLE_LAB=t
+    export JUPYTER_BEFORE=$PWD/install.sh
+    jupyter_launch $JUPYTER_WORKDIR
+}
+
+jupyter_launch() {
+    local help=$(cat <<HELP
+## jupyter_launch
+
+Start a jupyter server.
+
+To set additional args you can do the following:
+
+...shell
+export JUPYTER_ENABLE_LAB=t
+export JUPYTER_CHOWN_HOME=t
+export JUPYTER_BEFORE=/file/to/run/before/book.sh
+export JUPYTER_CHOWN_EXTRA="/paths,/to,/also/chown"
+export JUPYTER_CHOWN_HOME=t
+export JUPYTER_CHOWN_HOME_OPTS="-R 770"
+export JUPYTER_ENABLE_LAB=t
+export JUPYTER_NB_USER=$USER
+export JUPYTER_OPTS="-e OtherOpt=Value -e MoreOpts=MoreThings"
+export JUPYTER_RUN_ROOT=t
+export JUPYTER_WORKDIR="/path/to/project"
+
+jupyter_launch
+...
+
+HELP
+          )
+    [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
+    set -- docker run -it -p 8888:8888 -p 8080:8080 -e USE_SSL=yes -e GEN_CERT=yes
+    [ -n "$JUPYTER_BEFORE" ] && set -- "$@" -v "$JUPYTER_BEFORE":/usr/local/bin/before-notebook.d/boot.sh
+    [ -n "$JUPYTER_CHOWN_EXTRA" ] && set -- "$@" -e CHOWN_HOME_EXTRA=${JUPYTER_CHOWN_HOME_EXTRA}
+    [ -n "$JUPYTER_CHOWN_HOME" ] && set -- "$@" -e CHOWN_HOME=yes
+    [ -n "$JUPYTER_CHOWN_HOME_OPTS" ] && set -- "$@" -e CHOWN_HOME_OPTS=${JUPYTER_CHOWN_HOME_OPTS}
+    [ -n "$JUPYTER_ENABLE_LAB" ] && set -- "$@" -e JUPYTER_ENABLE_LAB=yes
+    [ -n "$JUPYTER_NB_USER"] && set -- "$@" -e NB_USER=${JUPYTER_NB_USER}
+    [ -n "$JUPYTER_OPTS"] && set -- "$@" ${JUPYTER_OPTS}
+    [ -n "$JUPYTER_RUN_ROOT" ] && set -- "$@" --user=root
+    [ -n "$JUPYTER_WORKDIR" ] && set -- "$@" -v "$JUPYTER_WORKDIR":/home/jovyan/shared
+    set -- "$@" "${export JUPYTER_IMAGE-jupyter/base-notebook}"
+    "$@"
+}
