@@ -22,9 +22,11 @@
 case $SHELL in
     *zsh)
         export LIBSH_HOME=${0:a:h}
+        export LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
         ;;
     *bash)
         export LIBSH_HOME=$(dirname $BASH_SOURCE[@])
+        export LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
         ;;
     *)
         echo "Failed. Shell of \"$SHELL\" not supported" && kill -INT $$
@@ -52,7 +54,13 @@ libsh__debug "fn defaults > ${libsh_fn_defaults[*]}"
 libsh__load() {
     local mode=$1
 
+    # remove log file if it exists
+    [ -f $LIBSH_DEBUG_LOGFILE ] && [ $(wc -l $LIBSH_DEBUG_LOGFILE | awk '{print $1}') -gt 1000 ] && \
+        rm $LIBSH_DEBUG_LOGFILE
+
     if [ ${#libsh_fn[@]} ]; then
+        [[ "${mode}" == "env" ]] && libsh__debug "\n\n---ENV-$(date)--"
+        [[ "${mode}" == "fn" ]] && libsh__debug "\n\n---FN-$(date)--"
         for fn in ${libsh_fn[@]}
         do
             # debug and show what we load for ${FN}.sh
@@ -72,8 +80,15 @@ libsh__load() {
             # var name
             local env_varname="LIBSH_status_env_${fn}"
             # load the FNs envs
-            [[ "${mode}" == "env" ]] && [ -f ${LIBSH_HOME}/${fn}.env.sh ] && source ${LIBSH_HOME}/${fn}.env.sh && printf -v "$env_varname" '%s' "loaded" && libsh__debug "ENV  Loading '${LIBSH_HOME}/${fn}.env.sh'"
+            [[ "${mode}" == "env" ]] && \
+                [ -f ${LIBSH_HOME}/${fn}.env.sh ] && \
+                source ${LIBSH_HOME}/${fn}.env.sh && \
+                printf -v "$env_varname" '%s' "loaded" && \
+                libsh__debug "ENV  Loading '${LIBSH_HOME}/${fn}.env.sh'"
         done
+
+        [[ "${mode}" == "env" ]] && libsh__debug "---ENV-$(date)--\n\n"
+        [[ "${mode}" == "fn" ]] && libsh__debug "---FN-$(date)--\n\n"
         export LIBSH_STATUS=t
     else
         export LIBSH_STATUS=f
