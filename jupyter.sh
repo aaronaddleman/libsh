@@ -175,7 +175,10 @@ HELP
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     export JUPYTER_WORKDIR=$1
     export JUPYTER_ENABLE_LAB=t
-    export JUPYTER_BEFORE=$PWD/install.sh
+    export JUPYTER_NB_USER=$USER
+    export JUPYTER_GRANT_SUDO=yes
+    export JUPYTER_RUN_ROOT=t
+    export JUPYTER_BEFORE=$LIBSH_HOME/scripts/install.sh
     jupyter_launch $JUPYTER_WORKDIR
 }
 
@@ -195,6 +198,7 @@ export JUPYTER_CHOWN_EXTRA="/paths,/to,/also/chown"
 export JUPYTER_CHOWN_HOME=t
 export JUPYTER_CHOWN_HOME_OPTS="-R 770"
 export JUPYTER_ENABLE_LAB=t
+export JUPYTER_GRANT_SUDO=yes
 export JUPYTER_NB_USER=$USER
 export JUPYTER_OPTS="-e OtherOpt=Value -e MoreOpts=MoreThings"
 export JUPYTER_RUN_ROOT=t
@@ -212,10 +216,11 @@ HELP
     [ -n "$JUPYTER_CHOWN_HOME" ] && set -- "$@" -e CHOWN_HOME=yes
     [ -n "$JUPYTER_CHOWN_HOME_OPTS" ] && set -- "$@" -e CHOWN_HOME_OPTS=${JUPYTER_CHOWN_HOME_OPTS}
     [ -n "$JUPYTER_ENABLE_LAB" ] && set -- "$@" -e JUPYTER_ENABLE_LAB=yes
-    [ -n "$JUPYTER_NB_USER"] && set -- "$@" -e NB_USER=${JUPYTER_NB_USER}
-    [ -n "$JUPYTER_OPTS"] && set -- "$@" ${JUPYTER_OPTS}
+    [ -n "$JUPYTER_GRANT_SUDO" ] && set -- "$@" -e GRANT_SUDO=yes
+    [ -n "$JUPYTER_NB_USER" ] && set -- "$@" -e NB_USER=${JUPYTER_NB_USER}
+    [ -n "$JUPYTER_OPTS" ] && set -- "$@" ${JUPYTER_OPTS}
     [ -n "$JUPYTER_RUN_ROOT" ] && set -- "$@" --user=root
     [ -n "$JUPYTER_WORKDIR" ] && set -- "$@" -v "$JUPYTER_WORKDIR":/home/jovyan/shared
-    set -- "$@" "${export JUPYTER_IMAGE-jupyter/base-notebook}"
+    set -- "$@" "${JUPYTER_IMAGE-jupyter/base-notebook}"
     "$@"
 }
