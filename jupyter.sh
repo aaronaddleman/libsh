@@ -157,6 +157,29 @@ HELP
     sudo ln -s /usr/local/lib/code-server/bin/code-server /usr/local/bin/code-server
 }
 
+jupyter_labs_simple() {
+    local help=$(cat <<HELP
+## jupyter_labs_vscode
+
+Start a jupyterlabs with vscode as well. Takes one arg of your workdir.
+Additional vars are available in the jupyer_launch function.
+
+...shell
+jupyter_labs_simple /path/to/your/project docker_img
+...
+
+HELP
+          )
+    [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
+    unset $(env | sed -n 's/^\(JUPYTER_.*\)=.*/\1/p')
+    export JUPYTER_IMAGE=${2}
+    export JUPYTER_WORKDIR=$1
+    export JUPYTER_ENABLE_LAB=t
+    export JUPYTER_GRANT_SUDO=yes
+    export JUPYTER_RUN_ROOT=t
+    env | grep JUPYTER_
+    jupyter_launch $JUPYTER_WORKDIR 
+}
 
 
 jupyter_labs_vscode() {
@@ -167,18 +190,22 @@ Start a jupyterlabs with vscode as well. Takes one arg of your workdir.
 Additional vars are available in the jupyer_launch function.
 
 ...shell
-jupyter_labs_vscode /path/to/your/project
+jupyter_labs_vscode /path/to/your/project docker_img_with_curl_installed
 ...
 
 HELP
           )
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
+    unset $(env | sed -n 's/^\(JUPYTER_.*\)=.*/\1/p') 
     export JUPYTER_WORKDIR=$1
+    export JUPYTER_IMAGE=${2}
     export JUPYTER_ENABLE_LAB=t
     export JUPYTER_NB_USER=$USER
     export JUPYTER_GRANT_SUDO=yes
     export JUPYTER_RUN_ROOT=t
     export JUPYTER_BEFORE=$LIBSH_HOME/scripts/install.sh
+    export JUPYTER_DOTDIR=$HOME/src/jupyterlabs_settings/aaronaddleman
+    env | grep JUPYTER_
     jupyter_launch $JUPYTER_WORKDIR
 }
 
@@ -211,6 +238,8 @@ HELP
           )
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     set -- docker run -it -p 8888:8888 -p 8080:8080 -e USE_SSL=yes -e GEN_CERT=yes
+    [ -f "$LIBSH_HOME/scripts/jupyter_default.sh" ] && \
+      set -- "$@" -v "$LIBSH_HOME/scripts/jupyter_default.sh:/usr/local/bin/before-notebook.d/jupyter_default.sh"
     [ -n "$JUPYTER_BEFORE" ] && set -- "$@" -v "$JUPYTER_BEFORE":/usr/local/bin/before-notebook.d/boot.sh
     [ -n "$JUPYTER_CHOWN_EXTRA" ] && set -- "$@" -e CHOWN_HOME_EXTRA=${JUPYTER_CHOWN_HOME_EXTRA}
     [ -n "$JUPYTER_CHOWN_HOME" ] && set -- "$@" -e CHOWN_HOME=yes
@@ -220,7 +249,8 @@ HELP
     [ -n "$JUPYTER_NB_USER" ] && set -- "$@" -e NB_USER=${JUPYTER_NB_USER}
     [ -n "$JUPYTER_OPTS" ] && set -- "$@" ${JUPYTER_OPTS}
     [ -n "$JUPYTER_RUN_ROOT" ] && set -- "$@" --user=root
-    [ -n "$JUPYTER_WORKDIR" ] && set -- "$@" -v "$JUPYTER_WORKDIR":/home/jovyan/shared
+    [ -n "$JUPYTER_WORKDIR" ] && set -- "$@" -v "$JUPYTER_WORKDIR":/data/user/${JUPYTER_NB_USER-jovyan}/shared
+    [ -n "$JUPYTER_DOTDIR" ] && set -- "$@" -v "$JUYPYTER_DOTDIR":/data/user/{$JUYPYTER_NB_USER-jovyan}/.jupyter
     set -- "$@" "${JUPYTER_IMAGE-jupyter/base-notebook}"
     "$@"
 }
