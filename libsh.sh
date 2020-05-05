@@ -35,7 +35,7 @@ esac
 #
 # Load libsh_utils.sh
 #
-source $LIBSH_HOME/libsh_utils.sh
+[ -n "${LIBSH_HOME}" ] && source $LIBSH_HOME/libsh_utils.sh
 
 #
 # define custom Functions and default Functions
@@ -54,15 +54,20 @@ libsh__debug "fn defaults > ${libsh_fn_defaults[*]}"
 libsh__load() {
     local mode=$1
 
+    # when in debug mode,
     # remove log file if it exists
-    [ -f $LIBSH_DEBUG_LOGFILE ] && [ $(wc -l $LIBSH_DEBUG_LOGFILE | awk '{print $1}') -gt 1000 ] && \
+    [ -n $LIBSH_DEBUG ] && \
+    [ -f $LIBSH_DEBUG_LOGFILE ] && \
+        [ $(wc -l $LIBSH_DEBUG_LOGFILE | awk '{print $1}') -gt 1000 ] && \
         rm $LIBSH_DEBUG_LOGFILE
 
+    # start of libsh fn and env for-loop
     if [ ${#libsh_fn[@]} ]; then
         [[ "${mode}" == "env" ]] && libsh__debug "\n\n---ENV-$(date)--"
         [[ "${mode}" == "fn" ]] && libsh__debug "\n\n---FN-$(date)--"
         for fn in ${libsh_fn[@]}
         do
+            ### FN
             # debug and show what we load for ${FN}.sh
             [[ "${mode}" == "fn" ]] && libsh__debug "FN  Trying to load '${LIBSH_HOME}/${fn}.sh'"
             # var name
@@ -74,7 +79,7 @@ libsh__load() {
                 printf -v "$fn_varname" '%s' "loaded" && \
                 libsh__debug "FN  Loaded '${LIBSH_HOME}/${fn}.sh'"
 
-
+            ### FN.env
             # debug and show what we load for ${FN}.env.sh
             [[ "${mode}" == "env" ]] && libsh__debug "ENV  Trying to load '${LIBSH_HOME}/${fn}.env.sh'"
             # var name
@@ -101,5 +106,6 @@ libsh__load() {
 }
 
 # if we get an arg, load the things!
-[ -z "${1}" ] && libsh__exit_with_message "ERR" "I need to know if you want to load 'fn' or 'env'."
-[ -z "${1}" ] || libsh__load ${1}
+[ -z "${1}" ] && libsh__exit_with_message "ERR" "I need to know if you want to load 'fn' or 'env'. Instead I got: '${1}'."
+[[ "$1" = "fn" || "$1" = "env" ]] && libsh__load ${1} || libsh__exit_with_message "ERR" "I did not get fn or env. Instead I got: '$1'"
+
