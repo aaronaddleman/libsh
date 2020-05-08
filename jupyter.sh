@@ -181,6 +181,33 @@ HELP
     jupyter_launch $JUPYTER_WORKDIR 
 }
 
+jupyter_labs_datasci_rstudio() {
+    local help=$(cat <<HELP
+## jupyter_datasci_rstudio
+
+Start a jupyterlabs with datascience and rstudio as well. Takes one arg of your workdir.
+Additional vars are available in the jupyer_launch function.
+
+...shell
+jupyter_labs_datasci_rstudio /path/to/your/project
+...
+
+HELP
+          )
+    [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
+    unset $(env | sed -n 's/^\(JUPYTER_.*\)=.*/\1/p') 
+    export JUPYTER_WORKDIR=$1
+    export JUPYTER_IMAGE=jupyter/datascience-notebook
+    export JUPYTER_RSTUDIO=yes
+    export JUPYTER_ENABLE_LAB=t
+    export JUPYTER_NB_USER=$USER
+    export JUPYTER_GRANT_SUDO=yes
+    export JUPYTER_RUN_ROOT=t
+    export JUPYTER_BEFORE=$LIBSH_HOME/scripts/install.sh
+    export JUPYTER_DOTDIR=$HOME/src/jupyterlabs_settings/aaronaddleman
+    env | grep JUPYTER_
+    jupyter_launch $JUPYTER_WORKDIR
+}
 
 jupyter_labs_vscode() {
     local help=$(cat <<HELP
@@ -237,7 +264,7 @@ jupyter_launch
 HELP
           )
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
-    set -- docker run -it -p 8888:8888 -p 8080:8080 -e USE_SSL=yes -e GEN_CERT=yes
+    set -- docker run -it -p 8888:8888 -p 8080:8080 -p 8787:8787 -e USE_SSL=yes -e GEN_CERT=yes
     [ -f "$LIBSH_HOME/scripts/jupyter_default.sh" ] && \
       set -- "$@" -v "$LIBSH_HOME/scripts/jupyter_default.sh:/usr/local/bin/before-notebook.d/jupyter_default.sh"
     [ -n "$JUPYTER_BEFORE" ] && set -- "$@" -v "$JUPYTER_BEFORE":/usr/local/bin/before-notebook.d/boot.sh
@@ -247,7 +274,7 @@ HELP
     [ -n "$JUPYTER_ENABLE_LAB" ] && set -- "$@" -e JUPYTER_ENABLE_LAB=yes
     [ -n "$JUPYTER_GRANT_SUDO" ] && set -- "$@" -e GRANT_SUDO=yes
     [ -n "$JUPYTER_NB_USER" ] && set -- "$@" -e NB_USER=${JUPYTER_NB_USER}
-    [ -n "$JUPYTER_OPTS" ] && set -- "$@" ${JUPYTER_OPTS}
+    [ -n "$JUPYTER_PORTS" ] && set -- "$@" ${JUPYTER_PORTS}
     [ -n "$JUPYTER_RUN_ROOT" ] && set -- "$@" --user=root
     [ -n "$JUPYTER_WORKDIR" ] && set -- "$@" -v "$JUPYTER_WORKDIR":/data/user/${JUPYTER_NB_USER-jovyan}/shared
     [ -n "$JUPYTER_DOTDIR" ] && set -- "$@" -v "$JUYPYTER_DOTDIR":/data/user/{$JUYPYTER_NB_USER-jovyan}/.jupyter
