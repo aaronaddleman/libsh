@@ -3,7 +3,7 @@ curl -SsL https://github.com/cdr/code-server/releases/download/3.1.1/code-server
 mv /usr/local/lib/code-server* /usr/local/lib/code-server
 #/usr/local/lib/code-server/code-server --host 0.0.0.0 --cert &
 
-if [ -n $JUPYTER_RSTUDIO ]; then
+if [ -n "${JUPYTER_RSTUDIO}" ]; then
     sudo apt update
     sudo apt-get -y install gdebi-core
     sudo apt-get -y install libssl1.0.0
