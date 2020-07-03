@@ -10,6 +10,3 @@ if hash xclip 2>/dev/null;then
 	  alias pbpaste="xclip -selection c -o"
 fi
 
-if hash terraform 2>/dev/null;then
-    alias tf="terraform"
-fi

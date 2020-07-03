@@ -12,3 +12,7 @@ HELP
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     [ ! -d ~/.tfenv ] && git clone https://github.com/tfutils/tfenv.git ~/.tfenv
 }
+
+if hash terraform 2>/dev/null;then
+    alias tf="terraform"
+fi
