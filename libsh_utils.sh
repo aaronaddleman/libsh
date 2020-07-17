@@ -16,7 +16,7 @@ libsh__help() {
 }
 
 libsh__fn() {
-    grep --no-filename -e "() {$" $LIBSH_HOME/*.sh | grep -v -e "^libsh__.*" | sed -e 's/() {//g'
+    \grep --no-filename -e "() {$" $LIBSH_HOME/*.sh | \grep -v -E "(^#.*|^libsh__.*|.*_pre|.*_post$|.*_validate_env)" | \sed -e 's/() {//g' | sort
 }
 
 # libsh__continue_msg
