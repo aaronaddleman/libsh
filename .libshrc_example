@@ -1,0 +1,71 @@
+#
+# LIBSH settings
+#
+# Variables used by LIBSH
+#
+
+# enable debuging to a file of $LIBSH_HOME/debug.log
+# export LIBSH_DEBUG=t
+
+# define your parent directory of all code
+# this is used by the "git_clone" function to
+# organize your repos by $domain/$org/$project
+# export LIBSH_SRC_DIR=$HOME/src
+
+# should we try to login with vault_login?
+# export LIBSH_USE_VAULT_LOGIN=t
+
+# rvm can be bloated sometimes
+# to disable per env, set or unset
+# export LIBSH_ENABLE_RVM=t
+
+# what directories do you want to seach for by name?
+# this makes for having to just type the directory
+# into the shell prompt and it will find the first match
+# export LIBSH_CDPATH=$HOME/src:$HOME/github.com:$HOME/git.autodesk.com
+
+# define a git template that you want to use for your
+# commit messages
+# export ENABLE_GIT_COMMIT_TEMPLATE=$HOME/src/dotfiles/git/commit-msg-template
+
+
+# Select functions to load
+#
+# choose which functions to load
+#
+# there are two files inside of libsh for each
+# function that split up the function and the environment
+#
+# filename.sh       = functions
+# filename.env.sh   = variables (paths, etc...)
+#
+# the reason for this is to follow best practice
+# of loading the functions being separate from
+# the environment variables
+#
+# if configured correctly, bash or zsh will load the
+# filename.env.sh first, then proceed to load the
+# filename.sh second
+
+export libsh_fn_custom=(
+git
+jupyter
+pyenv
+python
+custom
+aws
+sh_aliases
+figlet
+pass
+go
+options
+paths
+rust
+rvm
+ssh
+ssl
+terraform
+terragrunt
+vault
+sh_aliases
+)
