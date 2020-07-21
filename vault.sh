@@ -1,8 +1,7 @@
 vault_validate_env() {
     # check vault command exists
     command -v vault > /dev/null
-    [ $? = "0" ] && VAULT_EXISTS=t
-    [ $? = "0" ] || VAULT_EXISTS=f && libsh_exit_with_message "Problem" "vault cannot be found in $PATH"
+    [ "${?}" = "0" ] && export VAULT_EXISTS=t || (export VAULT_EXISTS=f && libsh__exit_with_message "Problem" "vault cannot be found in $PATH")
 
     # check VAULT_ADDR is populated
     if [ -z $VAULT_ADDR ]; then
