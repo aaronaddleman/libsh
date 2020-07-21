@@ -1,1 +1,1 @@
-[ -d $HOME/.tgenv ] && export PATH=$HOME/.tgenv/bin:$PATH
+[ -d $HOME/.tgenv ] && libsh__add_path "pre" "$HOME/.tgenv/bin"

@@ -1,1 +1,1 @@
-[ -d $HOME/.tfenv ] && export PATH="$HOME/.tfenv/bin:$PATH"
+[ -d $HOME/.tfenv ] && libsh__add_path "pre" "$HOME/.tfenv/bin"

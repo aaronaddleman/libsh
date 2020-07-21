@@ -98,3 +98,15 @@ HELP
     local b="${1:${#1}-n}"       # take the final n chars
     printf "%s%s\n" "${a//?/*}" "$b"   # substitute a with asterisks
 }
+
+libsh__add_path() {
+    local position=$1
+    local path_to_add=$2
+    libsh__debug "+ libsh__add_path $position $path_to_add"
+    # does path already exist?
+    [[ "$PATH" != *"$path_to_add"* ]] && local path_missing=t || libsh__debug "WRN  path already exists: $path_to_add"
+    # pre
+    [ ! -z $path_missing ] && [[ "${position}" == "pre" ]] && PATH="${path_to_add}:${PATH}"
+    # post
+    [ ! -z $path_missing ] && [[ "${position}" == "post" ]] && PATH="${PATH}:${path_to_add}"
+}

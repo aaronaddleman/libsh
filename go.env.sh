@@ -1,6 +1,6 @@
 # GOPATH
 [ -d $HOME/go ] && export GOPATH="$HOME/go" || libsh__debug "x..could not find $HOME/go"
-[ -d $HOME/go/bin ] && export PATH="$PATH:$HOME/go/bin"
+[ -d $HOME/go/bin ] && libsh__add_path "post" "$HOME/go/bin"
 
 # GOROOT
 [ -d /usr/lib/go ] && export GOROOT="/usr/lib/go" || libsh__debug "x..unable to find /usr/lib/go"

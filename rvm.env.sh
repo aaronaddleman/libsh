@@ -1,4 +1,4 @@
-[ -d $HOME/.rvm/bin ] && export PATH=$HOME/.rvm/bin:$PATH
+[ -d $HOME/.rvm/bin ] && libsh__add_path "pre" "$HOME/.rvm/bin"
 
 if [[ -d $HOME/.rvm && ! -z ${LIBSH_ENABLE_RVM} ]]; then
     source $HOME/.rvm/scripts/rvm
