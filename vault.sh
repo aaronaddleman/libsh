@@ -20,9 +20,9 @@ vault_validate_env() {
         fi
     fi
 
-    # check vault version
-    VAULT_VERSION=$(vault --version | awk '{print $2}')
-    [ $VAULT_VERSION = "v1.4*"] || libsh__exit_with_message "Problem" "Vault version not supported"
+    # # check vault version
+    # VAULT_VERSION=$(vault --version | awk '{print $2}')
+    # [ $VAULT_VERSION = "v1.4*"] || libsh__exit_with_message "Problem" "Vault version not supported"
 }
 
 vault_pre() {
@@ -298,6 +298,10 @@ HELP
 # vault_install_token_helper() {
 #     [ ! -f $HOME/.vault ] && echo "token_helper = \"${LIBSH_HOME}/scripts/vault_token_helper.sh\"" > ~/.vault
 # }
+
+vault_data() {
+    cat $HOME/.config/libsh/hc_vaults.json
+}
 
 vault_list() {
     local help=$(cat <<HELP
