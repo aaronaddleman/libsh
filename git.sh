@@ -35,7 +35,21 @@ HELP
 [ ! -z $ENABLE_GIT_COMMIT_TEMLPATE ] && git config --global commit.template $ENABLE_GIT_COMMIT_TEMPLATE
 
 git_remove_local_not_master() {
-    git branch | grep -v "master" | xargs git branch -D
+    local help=$(cat <<HELP
+## git_remove_local_not_master
+
+Delete local branches that are not merged. This excludes master branch.
+
+Eg.
+
+...shell
+git_remove_local_not_master
+...
+
+HELP
+          )
+    [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
+    git branch | grep -v "master" | xargs git branch -d
 }
 
 #
