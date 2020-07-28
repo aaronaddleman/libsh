@@ -30,7 +30,7 @@ HELP
 # set git commit template
 #
 [[ ! -z ${ENABLE_GIT_COMMIT_TEMPLATE} && -f $ENABLE_GIT_COMMIT_TEMPLATE ]] || \
-    libsh__exit_with_message "ERR" "Missing file for git commit template"
+    libsh__debug "Missing file for git commit template"
 
 [ ! -z $ENABLE_GIT_COMMIT_TEMLPATE ] && git config --global commit.template $ENABLE_GIT_COMMIT_TEMPLATE
 
