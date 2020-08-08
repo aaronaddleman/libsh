@@ -1,4 +1,3 @@
-
 terraform_install_tfenv() {
     local help=$(cat <<HELP
 ## terraform_install_tfenv
@@ -13,6 +12,5 @@ HELP
     [ ! -d ~/.tfenv ] && git clone https://github.com/tfutils/tfenv.git ~/.tfenv
 }
 
-if hash terraform 2>/dev/null;then
-    alias tf="terraform"
-fi
+command -v terraform > /dev/null
+[ $? -eq 0 ] && alias tf="terraform"
