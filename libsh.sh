@@ -19,18 +19,24 @@
 #
 # Find out where this file lives and call it home
 #
-case $SHELL in
-    *zsh)
-        export LIBSH_HOME=${0:a:h}
-        export LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
-        ;;
-    *bash)
-        export LIBSH_HOME=$(dirname $BASH_SOURCE[@])
-        export LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
-        ;;
-    *)
-        echo "Failed. Shell of \"$SHELL\" not supported" && kill -INT $$
-esac
+if [ -z $LIBSH_HOME ]; then
+    case $SHELL in
+        *zsh)
+            export LIBSH_HOME=${0:a:h}
+            export LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
+            ;;
+        *bash)
+            export LIBSH_HOME=$(dirname $BASH_SOURCE[@])
+            export LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
+            ;;
+        *)
+            echo "Failed. Shell of \"$SHELL\" not supported" && kill -INT $$
+    esac
+
+    [ -n $LIBSH_HOME ] && export LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
+    [ -z $LIBSH_HOME ] && echo "Could not set LIBSH_HOME." && kill -INT $$
+fi
+
 
 #
 # Load libsh_utils.sh
@@ -108,4 +114,3 @@ libsh__load() {
 # if we get an arg, load the things!
 [ -z "${1}" ] && libsh__exit_with_message "ERR" "I need to know if you want to load 'fn' or 'env'. Instead I got: '${1}'."
 [[ "$1" = "fn" || "$1" = "env" ]] && libsh__load ${1} || libsh__exit_with_message "ERR" "I did not get fn or env. Instead I got: '$1'"
-
