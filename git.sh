@@ -72,7 +72,7 @@ git_clone https://github.com/aaronaddleman/libsh
 ...
 
 HELP
-          )
+)
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     libsh__debug "exec: git_clone"
     [ -z $LIBSH_SRC_DIR ] && libsh__exit_with_message "ERR" "Please define LIBSH_SRC_DIR in $HOME/.libshrc"
@@ -89,17 +89,14 @@ HELP
     local domain=$(echo "$repo" | awk -F/ '{print $3}')
     libsh__debug "_var: domain = $domain"
 
-    # try to find the name of the org
-    local org=$(echo "$repo" | awk -F/ '{print $4}')
-    libsh__debug "_var: repo = $repo"
-
     # try to find the name of the project
     local project=$(echo "$repo" | awk -F/ '{print $5}' | sed -e 's/\.git//g')
     libsh__debug "_var: project = $project"
 
     # try cloning
-    local git_clone_args="$repo $LIBSH_SRC_DIR/$org/$domain/$project"
+    local git_clone_args="$repo $LIBSH_SRC_DIR/$domain/$project"
     libsh__debug "_args: $git_clone_args"
     libsh__debug "_exec: git clone $git_clone_args"
     git clone $repo $LIBSH_SRC_DIR/$domain/$org/$project
 }
+

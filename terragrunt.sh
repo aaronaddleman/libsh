@@ -1,5 +1,3 @@
-[[ ! -z ${ENABLE_TERRAGRUNT_ALIAS} ]] && alias tg="terragrunt"
-
 terragrunt_install_tgenv() {
     local help=$(cat <<HELP
 ## terragrunt_install_tgenv
@@ -13,3 +11,6 @@ HELP
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     [ ! -d $HOME/.tgenv ] && git clone https://github.com/cunymatthieu/tgenv.git $HOME/.tgenv
 }
+
+command -v terragrunt > /dev/null
+[ $? -eq 0 ] && alias tg="terragrunt"

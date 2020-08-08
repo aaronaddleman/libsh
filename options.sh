@@ -1,6 +1,7 @@
 case $SHELL in
   *zsh)
-    setopt correct
+      command -v setopt > /dev/null
+      [ $? -eq 0 ] && setopt correct
     ;;
   *bash)
     shopt -s cdspell

@@ -27,16 +27,20 @@ HELP
            -p 8888:8888 \
            -p 8080:8080 \
            --user=root \
-	         -e NB_USER=$USER \
+           -e SHELL=/usr/bin/zsh \
+           -e NB_USER=$USER \
            -e NB_GID=$(id -u) \
-	         -e JUPYTER_ENABLE_LAB=yes \
-	         -e GRANT_SUDO=yes \
-	         -e GEN_CERT=yes \
+           -e JUPYTER_ENABLE_LAB=yes \
+           -e GRANT_SUDO=yes \
+           -e GEN_CERT=yes \
            -e CHOWN_HOME=yes \
            -v "${LIBSH_HOME}/jupyterlabs_boot.sh":/usr/local/bin/before-notebook.d/jupyter.sh \
            -v "${HOME}/.libshrc":/home/$USER/.libshrc \
-           -v "${LIBSH_HOME}":/home/$USER/libsh \
-	         -v "${workdir}":/home/$USER/work \
+           -v "${LIBSH_HOME}/.bash_profile":/home/$USER/.bash_profile \
+           -v "${LIBSH_HOME}/.zshrc":/home/$USER/.zshrc \
+           -v "${LIBSH_HOME}/.zshenv":/home/$USER/.zshenv \
+           -v "${LIBSH_HOME}":/home/$USER/src/libsh \
+           -v "${workdir}":/home/$USER/work \
            jupyter/base-notebook
 }
 
@@ -86,7 +90,7 @@ HELP
     export JUPYTER_GRANT_SUDO=yes
     export JUPYTER_RUN_ROOT=t
     env | grep JUPYTER_
-    jupyter_launch $JUPYTER_WORKDIR 
+    jupyter_launch $JUPYTER_WORKDIR
 }
 
 jupyter_labs_datasci_rstudio() {
@@ -103,7 +107,7 @@ jupyter_labs_datasci_rstudio /path/to/your/project
 HELP
           )
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
-    unset $(env | sed -n 's/^\(JUPYTER_.*\)=.*/\1/p') 
+    unset $(env | sed -n 's/^\(JUPYTER_.*\)=.*/\1/p')
     export JUPYTER_WORKDIR=$1
     export JUPYTER_IMAGE=jupyter/datascience-notebook
     export JUPYTER_RSTUDIO=yes
@@ -131,7 +135,7 @@ jupyter_labs_vscode /path/to/your/project docker_img_with_curl_installed
 HELP
           )
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
-    unset $(env | sed -n 's/^\(JUPYTER_.*\)=.*/\1/p') 
+    unset $(env | sed -n 's/^\(JUPYTER_.*\)=.*/\1/p')
     export JUPYTER_WORKDIR=$1
     export JUPYTER_IMAGE=${2}
     export JUPYTER_ENABLE_LAB=t
@@ -172,6 +176,7 @@ jupyter_launch
 HELP
           )
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
+    set -x
     set -- docker run -it -p 8888:8888 -p 8080:8080 -p 8787:8787 -e USE_SSL=yes -e GEN_CERT=yes
     [ -f "$LIBSH_HOME/scripts/jupyter_default.sh" ] && \
       set -- "$@" -v "$LIBSH_HOME/scripts/jupyter_default.sh:/usr/local/bin/before-notebook.d/jupyter_default.sh"
@@ -188,4 +193,5 @@ HELP
     [ -n "$JUPYTER_DOTDIR" ] && set -- "$@" -v "$JUYPYTER_DOTDIR":/data/user/{$JUYPYTER_NB_USER-jovyan}/.jupyter
     set -- "$@" "${JUPYTER_IMAGE-jupyter/base-notebook}"
     "$@"
+    set +x
 }
