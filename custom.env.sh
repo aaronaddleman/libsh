@@ -5,5 +5,6 @@
 [ $? = 0 ] && \
     for file in ${dirlist[*]}
     do
+        libsh__debug "ENV  Trying to load $file"
         source ${file}
     done
