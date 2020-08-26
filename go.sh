@@ -23,3 +23,7 @@ HELP
         gometalinter --install --update
     fi
 }
+
+go_install_goenv() {
+    git clone https://github.com/syndbg/goenv.git ~/.goenv
+}

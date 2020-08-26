@@ -1,5 +1,11 @@
+# GOENV
+[ -d $HOME/.goenv ] && export GOENV_ROOT="$HOME/.goenv"
+[ -d $HOME/.goenv ] && libsh__add_path "pre" "$GOENV_ROOT/bin"
+[ -d $HOME/.goenv ] && eval "$(goenv init -)"
+[ -d $GOPATH/bin ] || mkdir $GOPATH/bin
+
 # GOPATH
-[ -d $HOME/go ] && export GOPATH="$HOME/go" || libsh__debug "x..could not find $HOME/go"
+[ -d $HOME/go -a ! -d $HOME/.goenv ] && export GOPATH="$HOME/go" || libsh__debug "x..could not find $HOME/go"
 [ -d $HOME/go/bin ] && libsh__add_path "post" "$HOME/go/bin"
 
 # GOROOT
