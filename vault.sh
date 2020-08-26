@@ -308,6 +308,25 @@ vault_list() {
 
 List known vaults from ~/.config/libsh/hc_vaults.json
 
+example:
+
+...json
+[
+  {
+    "name": "corporate_vault",
+    "url": "https://vault.server.net:8200",
+    "auth_user": "mr_anderson",
+    "auth_method": "ldap"
+  },
+  {
+    "name": "personal_vault",
+    "url": "https://awesome.vault.org:8200",
+    "auth_user": "neo",
+    "auth_method": "ldap"
+  }
+]
+...
+
 HELP
           )
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
