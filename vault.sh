@@ -351,7 +351,7 @@ vault_use name_of_vault
 This will set the following:
 
 * VAULT_ADDR
-* VAULT_METHOD
+* VAULT_METHOD_VALUE
 * VAULT_USER
 
 HELP
@@ -359,10 +359,9 @@ HELP
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     local name=$1
     local selected_record=$(jq -r --arg NAME $name '.[] | select(.name == $NAME)' <<<$(vault_data) )
-    export VAULT_ADDR=$(jq -r '.url' <<<$selected_record )
-
-    local VAULT_METHOD=$(jq -r '.auth_method' <<<$selected_record )
     local VAULT_USER=$(jq -r '.auth_user' <<<$selected_record )
+    export VAULT_ADDR=$(jq -r '.url' <<<$selected_record )
+    export VAULT_METHOD_VALUE=$(jq -r '.auth_method' <<<$selected_record )
 
     [ -d $HOME/.config/vault/tokens ] || mkdir -p $HOME/.config/vault/tokens
 }
