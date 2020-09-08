@@ -105,13 +105,13 @@ HELP
 
     # clear vars being set
     aws_reset
-    TTL=${TTL:-2h}
+    VAULT_TTL=${VAULT_TTL:-2h}
     # if LIBSH_USE_VAULT_LOGIN is set, then try logging in
     [ ! -z ${LIBSH_USE_VAULT_LOGIN} ] && vault_login > /dev/null
 
-    echo "Looking at vault path $1 with ttl ${TTL}"
+    echo "Looking at vault path $1 with ttl ${VAULT_TTL}"
 
-    local vault_json=$(vault write -format=json $1 ttl=${TTL})
+    local vault_json=$(vault write -format=json $1 ttl=${VAULT_TTL})
 
     # if there is a problem, exit with error
     [ $? -ne 0 ] && __exit_with_message "Problem reading from vault or path '$1'"
@@ -268,17 +268,10 @@ vault_login
 HELP
           )
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
-    vault_pre
     local VAULT_USER=${1:-$USER}
 
-    case "$VAULT_METHOD_VALUE" in
-        ldap)
-            vault login -method=$VAULT_METHOD_VALUE username=$VAULT_USER
-            ;;
-        *)
-            vault login username=$VAULT_USER
-            ;;
-    esac
+    unset VAULT_TOKEN
+    vault_login
 }
 
 # vault_share
@@ -310,11 +303,11 @@ HELP
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     vault_pre
     # ttl
-    TTL=$1
+    VAULT_TTL=$1
     # file with secrets
     FILE=$2
     # create token with policy=default
-    CLIENT_TOKEN=$(vault token create -format=json -policy="default" -ttl=${TTL} | jq -r '.auth.client_token')
+    CLIENT_TOKEN=$(vault token create -format=json -policy="default" -ttl=${VAULT_TTL} | jq -r '.auth.client_token')
     # write secret to cubby with token created
     VAULT_TOKEN=${CLIENT_TOKEN} vault write cubbyhole/data value=@${FILE}
     # print line for sharing secret
@@ -336,6 +329,17 @@ vault_data() {
 }
 
 vault_config() {
+
+    local help=$(cat <<HELP
+## vault_config
+
+Show existing vault configuration file:
+
+     $HOME/.config/libsh/hc_vaults.json
+
+HELP
+          )
+    [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     echo $HOME/.config/libsh/hc_vaults.json
     cat $HOME/.config/libsh/hc_vaults.json
 }
