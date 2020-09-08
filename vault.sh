@@ -105,13 +105,13 @@ HELP
 
     # clear vars being set
     aws_reset
-
+    TTL=${TTL:-2h}
     # if LIBSH_USE_VAULT_LOGIN is set, then try logging in
     [ ! -z ${LIBSH_USE_VAULT_LOGIN} ] && vault_login > /dev/null
 
-    echo "Looking at vault path $1"
+    echo "Looking at vault path $1 with ttl ${TTL}"
 
-    local vault_json=$(vault write -format=json $1 -ttl=4h)
+    local vault_json=$(vault write -format=json $1 ttl=${TTL})
 
     # if there is a problem, exit with error
     [ $? -ne 0 ] && __exit_with_message "Problem reading from vault or path '$1'"
@@ -245,7 +245,40 @@ HELP
             *)
                 vault login username=$VAULT_USER
         esac
+    else
+        echo "Already logged into vault"
     fi
+}
+
+vault_login_now() {
+    local help=$(cat <<HELP
+## vault_login_now
+
+Forces vault login even if there is valid token available.
+Login to vault with VAULT_USER variable or the USER
+variable. Use the VAULT_METHOD_VALUE for what method
+to login with or just try logging in.
+
+...shell
+export VAULT_METHOD_VALUE=ldap
+export VAULT_USER=aaronaddleman
+vault_login
+...
+
+HELP
+          )
+    [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
+    vault_pre
+    local VAULT_USER=${1:-$USER}
+
+    case "$VAULT_METHOD_VALUE" in
+        ldap)
+            vault login -method=$VAULT_METHOD_VALUE username=$VAULT_USER
+            ;;
+        *)
+            vault login username=$VAULT_USER
+            ;;
+    esac
 }
 
 # vault_share
@@ -302,30 +335,16 @@ vault_data() {
     cat $HOME/.config/libsh/hc_vaults.json
 }
 
+vault_config() {
+    echo $HOME/.config/libsh/hc_vaults.json
+    cat $HOME/.config/libsh/hc_vaults.json
+}
+
 vault_list() {
     local help=$(cat <<HELP
 ## vault_list
 
 List known vaults from ~/.config/libsh/hc_vaults.json
-
-example:
-
-...json
-[
-  {
-    "name": "corporate_vault",
-    "url": "https://vault.server.net:8200",
-    "auth_user": "mr_anderson",
-    "auth_method": "ldap"
-  },
-  {
-    "name": "personal_vault",
-    "url": "https://awesome.vault.org:8200",
-    "auth_user": "neo",
-    "auth_method": "ldap"
-  }
-]
-...
 
 HELP
           )
