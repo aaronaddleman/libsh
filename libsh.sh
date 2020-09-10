@@ -46,9 +46,10 @@ fi
 #
 # define custom Functions and default Functions
 #
-source $LIBSH_HOME/.libshrc && libsh__debug "loaded $LIBSH_HOME/.libshrc"
+source $LIBSH_HOME/.libshrc.sh && libsh__debug "loaded $LIBSH_HOME/.libshrc.sh"
 # if custom libshrc exists, load that
 [[ -f "$HOME/.libshrc" ]] && source $HOME/.libshrc && libsh__debug "loaded $HOME/.libshrc"
+[[ -f "$HOME/.libshrc.sh" ]] && source $HOME/.libshrc.sh && libsh__debug "loaded $HOME/.libshrc.sh"
 
 libsh_fn=("${libsh_fn_custom[@]}" "${libsh_fn_defaults[@]}")
 libsh__debug "fn custom -> ${libsh_fn_custom[*]}"
