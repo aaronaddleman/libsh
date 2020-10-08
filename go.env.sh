@@ -4,7 +4,13 @@
 [ -d $HOME/.goenv ] && eval "$(goenv init -)"
 [ -d $GOPATH/bin ] || mkdir $GOPATH/bin
 
+# let GOENV manage paths
+[ -d $HOME/.goenv ] && libsh__add_path "pre" "$GOROOT/bin"
+[ -d $HOME/.goenv ] && libsh__add_path "post" "$GOPATH/bin"
+
 # GOPATH
+## this will not conflict with goenv because the destination for 
+## for goenv is $HOME/go/VER/bin
 [ -d $HOME/go -a ! -d $HOME/.goenv ] && export GOPATH="$HOME/go" || libsh__debug "x..could not find $HOME/go"
 [ -d $HOME/go/bin ] && libsh__add_path "post" "$HOME/go/bin"
 
