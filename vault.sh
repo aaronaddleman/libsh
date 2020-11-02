@@ -97,7 +97,8 @@ HELP
     [ ${1} = "--help" ] && libsh__libsh_help v2aws
     vault_pre
     aws_validate_env
-    aws_pre || libsh__exit_with_message "Unable to load 'aws_pre' function."
+    # this module requires loading of the aws.sh 
+    [ -z $LIBSH_status_fn_aws ] && libsh__exit_with_message "Requires AWS module. Add 'aws' to your .libshrc file."
     if [ -z "$1" ];then
         echo "Must specify vault path to read"
         return 1
@@ -119,8 +120,9 @@ HELP
     export AWS_ACCESS_KEY_ID=$(jq -r '.data.access_key' <<< $vault_json)
     export AWS_SECRET_ACCESS_KEY=$(jq -r '.data.secret_key' <<< $vault_json)
     export AWS_SESSION_TOKEN=$(jq -r '.data.security_token' <<< $vault_json)
-    aws sts get-caller-identity
 
+    # eval the full command with any options set
+    eval "$LIBSH_AWS_CMD sts get-caller-identity"
 }
 
 #

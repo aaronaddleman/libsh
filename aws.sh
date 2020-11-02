@@ -1,3 +1,4 @@
+
 aws_validate_env() {
     if command -v aws > /dev/null; then
         AWS_EXISTS=t
@@ -14,6 +15,11 @@ aws_validate_env() {
         libsh__exit_with_message "Problem" "jq status is $JQ_STATUS"
         return 1
     fi
+
+    export AWS_CLI_VERSION=$(aws --version | awk '{print $1}' | awk -F\/ '{print $2}')
+
+    [[ $AWS_CLI_VERSION =~ '^1.*' ]] && export LIBSH_AWS_CMD="aws"
+    [[ $AWS_CLI_VERSION =~ '^2.*' ]] && export LIBSH_AWS_CMD="aws --no-cli-pager"
 }
 
 aws_pre() {
@@ -40,7 +46,7 @@ HELP
           )
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     aws_validate_env
-    aws ec2 describe-vpcs | jq '.Vpcs[] | {id: .VpcId, cidr: .CidrBlock}'
+    eval "$LIBSH_AWS_CMD ec2 describe-vpcs" | jq '.Vpcs[] | {id: .VpcId, cidr: .CidrBlock}'
 }
 
 aws_vpc_sg() {
@@ -59,7 +65,7 @@ HELP
           )
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     aws_validate_env
-    aws ec2 describe-security-groups | jq '.SecurityGroups[] | {groupid: .GroupId, description: .Description}'
+    eval "$LIBSH_AWS_CMD ec2 describe-security-groups | jq '.SecurityGroups[] | {groupid: .GroupId, description: .Description}'"
 }
 
 aws_vpc_subnets() {
@@ -79,7 +85,13 @@ HELP
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     VPCID=$1
     aws_validate_env
-    aws ec2 describe-subnets --filters "Name=vpc-id,Values=$VPCID" --output text
+    eval "$LIBSH_AWS_CMD ec2 describe-subnets --filters \"Name=vpc-id,Values=$VPCID\" --output text"
+}
+
+aws_cli_install_macos_2() {
+    curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "/tmp/AWSCLIV2.pkg"
+    sudo installer -pkg /tmp/AWSCLIV2.pkg -target /
+    rm /tmp/AWSCLIV2.pkg
 }
 
 aws_ami_shared_with() {
@@ -99,7 +111,7 @@ HELP
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     AMI_ID=$1
     aws_validate_env
-    aws ec2 describe-image-attribute --attribute launchPermission --image-id $AMI_ID
+    eval "$LIBSH_AWS_CMD ec2 describe-image-attribute --attribute launchPermission --image-id $AMI_ID"
 }
 
 aws_reset(){
@@ -110,7 +122,7 @@ aws_find_instance_ips_by_name() {
     local help=$(cat <<HELP
 ## aws_find_instance_ips_by_name
 
-Find instance ips by name
+Find instance ips by name and return their private ip address
 
 Eg.
 
@@ -126,5 +138,7 @@ HELP
     aws_validate_env
     tag_value=$1
     aws_region=$2
-    aws ec2 describe-instances --filters "Name=tag-value,Values=${tag_value}" --region "${aws_region}" --query "Reservations[*].Instances[*].PrivateIpAddress" | jq -r '.[] | .[]' | xargs
+    eval "$LIBSH_AWS_CMD ec2 describe-instances --filters \"Name=tag-value,Values=${tag_value}\" --region \"${aws_region}\" --query \"Reservations[*].Instances[*].PrivateIpAddress\" | jq -r '.[] | .[]' | xargs"
 }
+
+
