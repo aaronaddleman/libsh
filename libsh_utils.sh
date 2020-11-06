@@ -8,6 +8,10 @@ libsh__exit_without_message() {
     kill -INT $$
 }
 
+libsh__message() {
+    echo "$1: $2"
+}
+
 libsh__help() {
     [[ "${1}" =~ "-help"$ ]] && libsh__help libsh__continue_msg
     args=$1
