@@ -1,4 +1,3 @@
-
 aws_validate_env() {
     if command -v aws > /dev/null; then
         AWS_EXISTS=t
@@ -89,6 +88,18 @@ HELP
 }
 
 aws_cli_install_macos_2() {
+    local help=$(cat <<HELP
+## aws_cli_install_macos_2
+
+Install the AWSCLIv2 package
+
+...shell
+aws_cli_install_macos_2
+...
+
+HELP
+          )
+    [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "/tmp/AWSCLIV2.pkg"
     sudo installer -pkg /tmp/AWSCLIV2.pkg -target /
     rm /tmp/AWSCLIV2.pkg
@@ -140,5 +151,3 @@ HELP
     aws_region=$2
     eval "$LIBSH_AWS_CMD ec2 describe-instances --filters \"Name=tag-value,Values=${tag_value}\" --region \"${aws_region}\" --query \"Reservations[*].Instances[*].PrivateIpAddress\" | jq -r '.[] | .[]' | xargs"
 }
-
-
