@@ -206,9 +206,9 @@ eg.
 
 ...shell
 vault_eval account/12345/sts/Application-Ops "mystuff_"
-echo $mystuff_secret_key
-echo $mystuff_access_key
-echo $mystuff_security_token
+echo \$mystuff_secret_key
+echo \$mystuff_access_key
+echo \$mystuff_security_token
 ...
 
 HELP

@@ -66,7 +66,7 @@ Eg.
 ...shell
 # clone the project of https://github.com/aaronaddleman/libsh
 # this would result in being cloned to
-# $HOME/$LIBSH_SRC_DIR/github.com/aaronaddleman/libsh
+# \$HOME/\$LIBSH_SRC_DIR/github.com/aaronaddleman/libsh
 #
 git_clone https://github.com/aaronaddleman/libsh
 ...
@@ -99,4 +99,3 @@ HELP
     libsh__debug "_exec: git clone $git_clone_args"
     git clone $repo $LIBSH_SRC_DIR/$domain/$org/$project
 }
-
