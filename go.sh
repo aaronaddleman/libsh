@@ -1,3 +1,6 @@
+# if you have .goenv installed, init
+[ -d $HOME/.goenv ] && eval "$(goenv init -)"
+
 go_install_for_spacemacs() {
     local help=$(cat <<HELP
 ## go_install_for_spacemacs

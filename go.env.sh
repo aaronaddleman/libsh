@@ -1,7 +1,6 @@
 # GOENV
 [ -d $HOME/.goenv ] && export GOENV_ROOT="$HOME/.goenv"
 [ -d $HOME/.goenv ] && libsh__add_path "pre" "$GOENV_ROOT/bin"
-[ -d $HOME/.goenv ] && eval "$(goenv init -)"
 [ -d $GOPATH/bin ] || mkdir $GOPATH/bin
 
 # let GOENV manage paths
