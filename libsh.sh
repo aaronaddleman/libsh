@@ -115,3 +115,13 @@ libsh__load() {
 # if we get an arg, load the things!
 [ -z "${1}" ] && libsh__exit_with_message "ERR" "I need to know if you want to load 'fn' or 'env'. Instead I got: '${1}'."
 [[ "$1" = "fn" || "$1" = "env" ]] && libsh__load ${1} || libsh__exit_with_message "ERR" "I did not get fn or env. Instead I got: '$1'"
+
+
+#
+# libsh reload
+#
+libsh__reload() {
+    libsh__load "env"
+    libsh__load "fn"
+    libsh__debug "RDO  Libsh Reloaded"
+}
