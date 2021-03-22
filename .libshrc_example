@@ -22,7 +22,7 @@
 # what directories do you want to seach for by name?
 # this makes for having to just type the directory
 # into the shell prompt and it will find the first match
-# export LIBSH_CDPATH=$HOME/src:$HOME/github.com:$HOME/git.autodesk.com
+# export LIBSH_CDPATH=$HOME/src:$HOME/github.com:$HOME/company.com
 
 # define a git template that you want to use for your
 # commit messages
