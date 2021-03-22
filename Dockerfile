@@ -1,6 +1,3 @@
-FROM ubuntu
+FROM bats/bats
 
-RUN apt -y update && apt install -y git
-RUN apt install -y bats
-# CMD ["--tap","/code/tests"]
-CMD ["bats","--pretty","/code/tests"]
+RUN apk update && apk add git
