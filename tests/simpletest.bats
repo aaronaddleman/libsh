@@ -29,8 +29,7 @@ function setup() {
 @test "installing goenv" {
   go_install_goenv
   [ -d $HOME/.goenv ]
+  libsh__reload
   source /code/.libshrc_bats
-  source /code/libsh.sh "env"
-  source /code/libsh.sh "fn"
   [ "$GOENV_ROOT" = "$HOME/.goenv" ]
 }
