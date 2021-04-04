@@ -48,6 +48,7 @@ export LIBSH_CDPATH=/code
 # filename.sh second
 
 export libsh_fn_custom=(
+1password
 git
 jupyter
 pyenv

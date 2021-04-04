@@ -33,3 +33,11 @@ function setup() {
   source ${GITHUB_WORKSPACE}/.libshrc_bats
   #[ "$GOENV_ROOT" = "$HOME/.goenv" ]
 }
+
+@test "installing 1password" {
+  1password_install_cli
+  [ -f $HOME/.local/bin/op ]
+  libsh__reload
+  source ${GITHUB_WORKSPACE}/.libshrc_bats
+  #[ "$GOENV_ROOT" = "$HOME/.goenv" ]
+}
