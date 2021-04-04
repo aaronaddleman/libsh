@@ -48,9 +48,7 @@ libsh__debug() {
     [[ "${1}" =~ "-help"$ ]] && libsh__help libsh__debug
     # print msg if debug is turned on
     MSG=$1
-    [[ -n "$LIBSH_DEBUG" && "${SHELL}" == *"bash" ]] && echo -e "$MSG" >> $LIBSH_DEBUG_LOGFILE
-    [[ -n "$LIBSH_DEBUG" && "${SHELL}" == *"zsh" ]] && echo -e "$MSG" >> $LIBSH_DEBUG_LOGFILE
-    [[ -n "$LIBSH_DEBUG" && "${SHELL}" == *"zsh" && "$LIBSH_DEBUG" == "trace" ]] && echo -e "$MSG ; msg from: \n$(echo $functrace | tr " " "\n")\n--- "
+    [ -z "$LIBSH_DEBUG" ] || echo -e "$MSG" >> $LIBSH_DEBUG_LOGFILE
 }
 
 libsh__help_doc() {
