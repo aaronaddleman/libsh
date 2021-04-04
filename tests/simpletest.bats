@@ -30,6 +30,6 @@ function setup() {
   go_install_goenv
   [ -d $HOME/.goenv ]
   libsh__reload
-  source /code/.libshrc_bats
+  source ${GITHUB_WORKSPACE}/.libshrc_bats
   #[ "$GOENV_ROOT" = "$HOME/.goenv" ]
 }
