@@ -5,7 +5,7 @@
 #
 
 # enable debuging to a file of $LIBSH_HOME/debug.log
-# export LIBSH_DEBUG=t
+export LIBSH_DEBUG=t
 
 # define your parent directory of all code
 # this is used by the "git_clone" function to
@@ -22,7 +22,7 @@
 # what directories do you want to seach for by name?
 # this makes for having to just type the directory
 # into the shell prompt and it will find the first match
-# export LIBSH_CDPATH=$HOME/src:$HOME/github.com:$HOME/company.com
+export LIBSH_CDPATH=/code
 
 # define a git template that you want to use for your
 # commit messages

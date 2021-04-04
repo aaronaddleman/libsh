@@ -29,6 +29,10 @@ if [ -z $LIBSH_HOME ]; then
             export LIBSH_HOME=$(dirname $BASH_SOURCE[@])
             export LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
             ;;
+        *ash)
+            export LIBSH_HOME=$(dirname $BASH_SOURCE[@])
+            export LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
+            ;;
         *)
             echo "Failed. Shell of \"$SHELL\" not supported" && kill -INT $$
     esac

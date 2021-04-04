@@ -1,3 +1,3 @@
-FROM zshusers/zsh
+FROM bats/bats
 
-RUN apt install jq
+RUN apk update && apk add git
