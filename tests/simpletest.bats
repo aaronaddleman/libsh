@@ -36,7 +36,7 @@ function setup() {
 
 @test "installing 1password" {
   1password_install_cli
-  [ -f /usr/local/bin/op ]
+  [ -f $HOME/.local/bin/op ]
   libsh__reload
   source ${GITHUB_WORKSPACE}/.libshrc_bats
   #[ "$GOENV_ROOT" = "$HOME/.goenv" ]
