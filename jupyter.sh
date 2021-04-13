@@ -35,7 +35,7 @@ HELP
            -e GEN_CERT=yes \
            -e CHOWN_HOME=yes \
            -v "${LIBSH_HOME}/jupyterlabs_boot.sh":/usr/local/bin/before-notebook.d/jupyter.sh \
-           -v "${HOME}/.libshrc":/home/$USER/.libshrc \
+           -v "${HOME}/.libshrc.sh":/home/$USER/.libshrc \
            -v "${LIBSH_HOME}/.bash_profile":/home/$USER/.bash_profile \
            -v "${LIBSH_HOME}/.zshrc":/home/$USER/.zshrc \
            -v "${LIBSH_HOME}/.zshenv":/home/$USER/.zshenv \
