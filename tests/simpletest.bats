@@ -41,3 +41,9 @@ function setup() {
   source ${GITHUB_WORKSPACE}/.libshrc_bats
   #[ "$GOENV_ROOT" = "$HOME/.goenv" ]
 }
+
+@test "starting jupyterlabs_base" {
+  jupyter_labs_docker_base $PWD
+  result = $(docker ps --format='{{json .}}' | jq -r '.State')
+  [ "${result}" == "running" ]
+}
