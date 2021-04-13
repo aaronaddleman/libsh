@@ -48,6 +48,7 @@ export LIBSH_CDPATH=/code
 # filename.sh second
 
 export libsh_fn_custom=(
+os
 1password
 git
 jupyter

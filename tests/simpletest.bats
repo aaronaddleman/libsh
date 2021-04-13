@@ -41,3 +41,7 @@ function setup() {
   source ${GITHUB_WORKSPACE}/.libshrc_bats
   #[ "$GOENV_ROOT" = "$HOME/.goenv" ]
 }
+
+@test "detecting os" {
+  [ "$LIBSH_OS" = "Linux" ]
+}
