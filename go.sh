@@ -1,6 +1,11 @@
 # if you have .goenv installed, init
 [ -d $HOME/.goenv ] && eval "$(goenv init -)"
 
+go_validate_env() {
+    command -v git > /dev/null
+    [ "${?}" = "0" ] || libsh__exit_with_message "Problem" "git command not found"
+}
+
 go_install_for_spacemacs() {
     local help=$(cat <<HELP
 ## go_install_for_spacemacs
@@ -28,5 +33,6 @@ HELP
 }
 
 go_install_goenv() {
+    go_validate_env
     git clone https://github.com/syndbg/goenv.git ~/.goenv
 }
