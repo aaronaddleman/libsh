@@ -48,6 +48,6 @@ function setup() {
   libsh__reload
   source ${GITHUB_WORKSPACE}/.libshrc_bats
   [ ! -z $PYENV_ROOT ]
-  $(which pyenv)
+  command -v pyenv
   [ "$?" = "0" ]
 }
