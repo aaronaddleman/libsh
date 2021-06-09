@@ -21,41 +21,47 @@
 #
 # Find out where this file lives and call it home
 #
-if [ -z $LIBSH_HOME ]; then
+if [ -z "$LIBSH_HOME" ]; then
     case $SHELL in
         *zsh)
-            export LIBSH_HOME=${0:a:h}
-            export LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
+            LIBSH_HOME=${0:a:h}
+            export LIBSH_HOME
+            LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
+            export LIBSH_DEBUG_LOGFILE
             ;;
         *bash)
-            export LIBSH_HOME=$(dirname $BASH_SOURCE[@])
-            export LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
+            LIBSH_HOME=$(dirname "${BASH_SOURCE[@]}")
+            export LIBSH_HOME
+            LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
+            export LIBSH_DEBUG_LOGFILE
             ;;
         *ash)
-            export LIBSH_HOME=$(dirname $BASH_SOURCE[@])
-            export LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
+            LIBSH_HOME=$(dirname "${BASH_SOURCE[@]}")
+            export LIBSH_HOME
+            LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
+            export LIBSH_DEBUG_LOGFILE
             ;;
         *)
             echo "Failed. Shell of \"$SHELL\" not supported" && kill -INT $$
     esac
 
-    [ -n $LIBSH_HOME ] && export LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
-    [ -z $LIBSH_HOME ] && echo "Could not set LIBSH_HOME." && kill -INT $$
+    [[ -n "$LIBSH_HOME" ]] && export LIBSH_DEBUG_LOGFILE=$LIBSH_HOME/debug.log
+    [[ -z "$LIBSH_HOME" ]] && echo "Could not set LIBSH_HOME." && kill -INT $$
 fi
 
 
 #
 # Load libsh_utils.sh
 #
-[ -n "${LIBSH_HOME}" ] && source $LIBSH_HOME/libsh_utils.sh
+[ -n "${LIBSH_HOME}" ] && source "$LIBSH_HOME"/libsh_utils.sh
 
 #
 # define custom Functions and default Functions
 #
-source $LIBSH_HOME/.libshrc.sh && libsh__debug "loaded $LIBSH_HOME/.libshrc.sh"
+source "$LIBSH_HOME"/.libshrc.sh && libsh__debug "loaded $LIBSH_HOME/.libshrc.sh"
 # if custom libshrc exists, load that
-[[ -f "$HOME/.libshrc" ]] && source $HOME/.libshrc && libsh__debug "loaded $HOME/.libshrc"
-[[ -f "$HOME/.libshrc.sh" ]] && source $HOME/.libshrc.sh && libsh__debug "loaded $HOME/.libshrc.sh"
+[[ -f "$HOME/.libshrc" ]] && source "$HOME"/.libshrc && libsh__debug "loaded $HOME/.libshrc"
+[[ -f "$HOME/.libshrc.sh" ]] && source "$HOME"/.libshrc.sh && libsh__debug "loaded $HOME/.libshrc.sh"
 
 libsh_fn=("${libsh_fn_custom[@]}" "${libsh_fn_defaults[@]}")
 libsh__debug "fn custom -> ${libsh_fn_custom[*]}"
@@ -69,16 +75,16 @@ libsh__load() {
 
     # when in debug mode,
     # remove log file if it exists
-    [ -n $LIBSH_DEBUG ] && \
-    [ -f $LIBSH_DEBUG_LOGFILE ] && \
-        [ $(wc -l $LIBSH_DEBUG_LOGFILE | awk '{print $1}') -gt 1000 ] && \
-        rm $LIBSH_DEBUG_LOGFILE
+    [ -n "$LIBSH_DEBUG" ] && \
+        [ -f "$LIBSH_DEBUG_LOGFILE" ] && \
+        [ "$(wc -l "$LIBSH_DEBUG_LOGFILE" | awk '{print $1}')" -gt 1000 ] && \
+        rm "$LIBSH_DEBUG_LOGFILE"
 
     # start of libsh fn and env for-loop
     if [ ${#libsh_fn[@]} ]; then
         [[ "${mode}" == "env" ]] && libsh__debug "\n\n---ENV-$(date)--"
         [[ "${mode}" == "fn" ]] && libsh__debug "\n\n---FN-$(date)--"
-        for fn in ${libsh_fn[@]}
+        for fn in "${libsh_fn[@]}"
         do
             ### FN
             # debug and show what we load for ${FN}.sh
@@ -87,8 +93,8 @@ libsh__load() {
             local fn_varname="LIBSH_status_fn_${fn}"
             # load the FNs
             [[ "${mode}" == "fn" ]] && \
-                [ -f ${LIBSH_HOME}/${fn}.sh ] && \
-                source ${LIBSH_HOME}/${fn}.sh && \
+                [ -f "${LIBSH_HOME}"/"${fn}".sh ] && \
+                source "${LIBSH_HOME}"/"${fn}".sh && \
                 printf -v "$fn_varname" '%s' "loaded" && \
                 libsh__debug "FN  Loaded '${LIBSH_HOME}/${fn}.sh'"
 
@@ -99,8 +105,8 @@ libsh__load() {
             local env_varname="LIBSH_status_env_${fn}"
             # load the FNs envs
             [[ "${mode}" == "env" ]] && \
-                [ -f ${LIBSH_HOME}/${fn}.env.sh ] && \
-                source ${LIBSH_HOME}/${fn}.env.sh && \
+                [ -f "${LIBSH_HOME}"/"${fn}".env.sh ] && \
+                source "${LIBSH_HOME}"/"${fn}".env.sh && \
                 printf -v "$env_varname" '%s' "loaded" && \
                 libsh__debug "ENV  Loading '${LIBSH_HOME}/${fn}.env.sh'"
         done
@@ -113,14 +119,14 @@ libsh__load() {
         libsh__exit_with_message "ERR" "Something went wrong in loading libsh."
     fi
 
-    if [ ${LIBSH_CHECK_BY_DATE} ]; then
+    if [ "${LIBSH_CHECK_BY_DATE}" ]; then
         libsh__check_by_date
     fi
 }
 
 # if we get an arg, load the things!
 [ -z "${1}" ] && libsh__exit_with_message "ERR" "I need to know if you want to load 'fn' or 'env'. Instead I got: '${1}'."
-[[ "$1" = "fn" || "$1" = "env" ]] && libsh__load ${1} || libsh__exit_with_message "ERR" "I did not get fn or env. Instead I got: '$1'"
+( [[ "$1" = "fn" || "$1" = "env" ]] && libsh__load "${1}" ) || libsh__exit_with_message "ERR" "I did not get fn or env. Instead I got: '$1'"
 
 
 #
