@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 case $SHELL in
   *zsh)
       command -v setopt > /dev/null

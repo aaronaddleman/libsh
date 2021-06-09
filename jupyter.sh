@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 jupyter_labs_docker_base() {
     local help=$(cat <<HELP
 ## jupyter_labs_docker_base

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # load any additional settings
 #[ -d $HOME/.bash.d ] && ls $HOME/.bash.d/*.env.sh 1> /dev/null 2>&1
 

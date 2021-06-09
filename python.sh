@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 python_install_virtualenv() {
     local help=$(cat <<HELP
 ## python_install_virtualenv
