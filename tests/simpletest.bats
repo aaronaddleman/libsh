@@ -50,5 +50,4 @@ function setup() {
   [ ! -z $PYENV_ROOT ]
   command -v pyenv
   [ "$?" = "0" ]
-  pyenv install 3.9.2
 }
