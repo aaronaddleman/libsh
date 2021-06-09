@@ -41,3 +41,13 @@ function setup() {
   source ${GITHUB_WORKSPACE}/.libshrc_bats
   #[ "$GOENV_ROOT" = "$HOME/.goenv" ]
 }
+
+@test "installing pyenv" {
+  pyenv_install
+  [ -d $HOME/.pyenv ]
+  libsh__reload
+  source ${GITHUB_WORKSPACE}/.libshrc_bats
+  [ ! -z $PYENV_ROOT ]
+  command -v pyenv
+  [ "$?" = "0" ]
+}
