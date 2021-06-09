@@ -47,4 +47,5 @@ function setup() {
   [ -d $HOME/.pyenv ]
   libsh__reload
   source ${GITHUB_WORKSPACE}/.libshrc_bats
+  [ ! -z $PYENV_ROOT ]
 }
