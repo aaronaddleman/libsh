@@ -5,6 +5,8 @@ if [ -d $HOME/.pyenv ]; then
     export PYENV_ROOT="$HOME/.pyenv"
     # set your path
     libsh__add_path "pre" "$PYENV_ROOT/bin"
+    # eval
+    eval "$(pyenv init --path)"
 fi
 
 # if [ -d $HOME/.pyenv ]; then
