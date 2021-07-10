@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 #
 # print expire date of cert
 #

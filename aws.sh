@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 aws_validate_env() {
     if command -v aws > /dev/null; then

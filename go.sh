@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # if you have .goenv installed, init
 [ -d $HOME/.goenv ] && eval "$(goenv init -)"
 

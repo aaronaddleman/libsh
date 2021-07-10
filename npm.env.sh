@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # npm env
 
 # npm command found?

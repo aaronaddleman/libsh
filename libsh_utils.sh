@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # exit with problem and not exit shell
 libsh__exit_with_message() {
     echo "$1: $2"

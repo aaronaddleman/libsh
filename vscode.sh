@@ -1,4 +1,6 @@
-vscode_keyrepeat_enable()
+#!/usr/bin/env bash
+
+vscode_keyrepeat_enable() {
     defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 }
 

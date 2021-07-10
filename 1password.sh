@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 1password_install_cli() {
     [[ "$(uname)" == "Darwin" ]] && brew install 1password-cli && libsh__exit_with_message "Installed" "1password-cli"
     [[ "$(uname)" == "Linux" ]] && export LIBSH_OSLINUX=t

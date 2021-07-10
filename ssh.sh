@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ssh_ec2() {
     local help=$(cat <<HELP
 ## ssh_ec2
