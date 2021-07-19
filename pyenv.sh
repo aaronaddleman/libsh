@@ -1,7 +1,7 @@
 if [ -d $HOME/.pyenv ]; then
-    if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
-    command -v pyenv > /dev/null
-    eval "$(pyenv init --path)"
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
     libsh__debug "FN +Loaded pyenv init"
 fi
 
