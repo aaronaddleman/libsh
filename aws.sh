@@ -27,9 +27,6 @@ aws_pre() {
     aws_validate_env
 }
 
-#aws_post() {
-#}
-
 aws_vpcs_cidr() {
     local help=$(cat <<HELP
 ## aws_vpcs_cidr
@@ -152,9 +149,9 @@ Eg.
 ...shell
 aws sts assume-role --role-arn "the-role-arn-you-want-to-assume" --role-session-name AWSCLI-Session | vault_assume_role
 ...
-
 HELP
-          )
+                 )
+
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     # get data from stdin
     json=$(</dev/stdin)
@@ -166,4 +163,46 @@ HELP
     export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' <<< $json)
     export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' <<< $json)
     export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' <<< $json)
+}
+
+aws_find_lambda_arn_by_name() {
+    local help=$(cat <<HELP
+## aws_find_lambda_arn_by_name
+
+Find a lambda ARN by filtering on its name
+
+Eg.
+
+...shell
+aws_find_lambda_arn_by_name "*pattern*"
+...
+
+HELP
+          )
+    [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
+    aws_validate_env
+    pattern=$1
+    aws_region=${2:-us-west-2}
+    eval "$LIBSH_AWS_CMD lambda list-functions --query 'Functions[?contains(FunctionName, \`${pattern}\`) == \`true\`].FunctionArn'"
+}
+
+aws_find_download_url_lambda_arn() {
+    local help=$(cat <<HELP
+## aws_find_download_url_lambda_arn
+
+Find a download url from a lambda arn
+
+Eg.
+
+...shell
+aws_find_download_url_lambda_arn the_arn
+aws_find_download_url_lambda_arn the_arn | xargs -L 1 wget
+...
+
+HELP
+          )
+    [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
+    aws_validate_env
+    lambda_arn=$1
+    eval "$LIBSH_AWS_CMD lambda get-function --function-name ${lambda_arn} --query 'Code.Location'"
 }
