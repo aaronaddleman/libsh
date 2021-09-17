@@ -1,5 +1,9 @@
 # if you have .goenv installed, init
+#[ -d $HOME/.goenv ] && export GOENV_ROOT="$HOME/.goenv"
+#[ -d $HOME/.goenv ] && libsh__add_path "pre" "$GOENV_ROOT/bin"
 [ -d $HOME/.goenv ] && eval "$(goenv init -)"
+[ ! -z $LIBSH_GOENV_MGMT_PATH ] && libsh__add_path "pre" "$GOROOT/bin"
+[ ! -z $LIBSH_GOENV_MGMT_PATH ] && libsh__add_path "post" "$GOPATH/bin"
 
 go_validate_env() {
     command -v git > /dev/null
