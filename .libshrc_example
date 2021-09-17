@@ -4,30 +4,72 @@
 # Variables used by LIBSH
 #
 
-# enable debuging to a file of $LIBSH_HOME/debug.log
-# export LIBSH_DEBUG=t
-
-# define your parent directory of all code
-# this is used by the "git_clone" function to
-# organize your repos by $domain/$org/$project
-# export LIBSH_SRC_DIR=$HOME/src
+############
+# Vault    #
+# Settings #
+############
 
 # should we try to login with vault_login?
 # export LIBSH_USE_VAULT_LOGIN=t
 
+
+############
+# RVM      #
+# Settings #
+############
+
 # rvm can be bloated sometimes
 # to disable per env, set or unset
 # export LIBSH_ENABLE_RVM=t
+
+
+############
+# Shell    #
+# Settings #
+############
 
 # what directories do you want to seach for by name?
 # this makes for having to just type the directory
 # into the shell prompt and it will find the first match
 # export LIBSH_CDPATH=$HOME/src:$HOME/github.com:$HOME/company.com
 
+############
+# Git/Code #
+# Settings #
+############
+
 # define a git template that you want to use for your
 # commit messages
 # export ENABLE_GIT_COMMIT_TEMPLATE=$HOME/src/dotfiles/git/commit-msg-template
 
+# define your parent directory of all code
+# this is used by the "git_clone" function to
+# organize your repos by $domain/$org/$project
+# export LIBSH_SRC_DIR=$HOME/src
+
+
+##########
+#        #
+# GOLang #
+#        #
+##########
+
+# GoEnv
+#
+# This allows you to select versions of GoLangs installed
+# on your system. Some people like this and its best to
+# let the tool take over setting paths. To stop this,
+# comment out the following line:
+export LIBSH_GOENV_MGMT_PATH=true
+
+
+############
+# LibSh    #
+# Settings #
+############
+
+# enable debuging to a file of $LIBSH_HOME/debug.log
+# export LIBSH_DEBUG=t
 
 # Select functions to load
 #

@@ -36,22 +36,25 @@ HELP
 
 [ ! -z $ENABLE_GIT_COMMIT_TEMLPATE ] && git config --global commit.template $ENABLE_GIT_COMMIT_TEMPLATE
 
-git_remove_local_not_master() {
+git_remove_local_merged() {
     local help=$(cat <<HELP
-## git_remove_local_not_master
+## git_remove_local_merged
 
-Delete local branches that are not merged. This excludes master branch.
+
+Delete local branches that are already merged. This excludes the branch pattern that is provided in arg 1.
 
 Eg.
 
 ...shell
-git_remove_local_not_master
+git_remove_local_not_merged "|main"
+git_remove_local_not_merged "|main|dev"
 ...
 
 HELP
           )
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
-    git branch | grep -v "master" | xargs git branch -d
+    [[ ! -z "${1}" ]] || libsh__exit_with_message "ERR" "Missing list of regex for branches to ignore"
+    git branch --merged | egrep -v "(^\*${1})" | xargs git branch -d
 }
 
 #

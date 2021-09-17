@@ -3,10 +3,8 @@
 if [ -d $HOME/.pyenv ]; then
     # set the PYENV_ROOT
     export PYENV_ROOT="$HOME/.pyenv"
-    # set your path
+    # add the path
     libsh__add_path "pre" "$PYENV_ROOT/bin"
-    # eval
-    eval "$(pyenv init --path)"
 fi
 
 # if [ -d $HOME/.pyenv ]; then

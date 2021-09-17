@@ -3,11 +3,11 @@
 # GOENV
 [ -d $HOME/.goenv ] && export GOENV_ROOT="$HOME/.goenv"
 [ -d $HOME/.goenv ] && libsh__add_path "pre" "$GOENV_ROOT/bin"
-[ -d $GOPATH/bin ] || mkdir $GOPATH/bin
+# [ -d $GOPATH/bin ] || mkdir $GOPATH/bin
 
 # let GOENV manage paths
-[ -d $HOME/.goenv ] && libsh__add_path "pre" "$GOROOT/bin"
-[ -d $HOME/.goenv ] && libsh__add_path "post" "$GOPATH/bin"
+# [ -d $HOME/.goenv ] && libsh__add_path "pre" "$GOROOT/bin"
+# [ -d $HOME/.goenv ] && libsh__add_path "post" "$GOPATH/bin"
 
 # GOPATH
 ## this will not conflict with goenv because the destination for 
