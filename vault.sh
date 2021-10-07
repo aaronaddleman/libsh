@@ -75,7 +75,7 @@ HELP
 }
 
 # add aliases
-[[ -z $LIBSH_VAULT_ALIASES ]] && alias v2aws=vault_aws_creds
+[[ -z $LIBSH_VAULT_DISABLE_ALIASES ]] && alias v2aws=vault_aws_creds
 
 vault_aws_creds(){
     local help=$(cat <<HELP
