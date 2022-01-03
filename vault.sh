@@ -242,7 +242,11 @@ HELP
     vault_pre
     vault token lookup > /dev/null
     if [ $? != 0 ]; then
+        [ -n $VAULT_METHOD ] && local VAULT_METHOD_VALUE=$VAULT_METHOD
         case "$VAULT_METHOD_VALUE" in
+            oidc)
+                vault login -method=$VAULT_METHOD_VALUE -no-print
+                ;;
             ldap)
                 vault login -method=$VAULT_METHOD_VALUE username=$VAULT_USER
                 ;;
