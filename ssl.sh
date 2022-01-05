@@ -71,11 +71,12 @@ ssl_split_pem() {
 Use this to take a OpenSSL pem file and split its parts into separate files of PrivateKey, Certificate, and Chain.
 
 ...shell
-ssl_cert_convert CERTFILE.pem
+ssl_split_pem CERTFILE.pem
 ...
 
 Expect the output to make the following files:
 
+CERTFILE.json       <-- certs in json on oneline
 CERTFILE-chain.crt  <-- chain certificate
 CERTFILE.crt        <-- certificate key
 CERTFILE.key        <-- private key
@@ -127,16 +128,15 @@ HELP
     }
     echo "DONE"
 
-    awk_cmd="awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}'"
     [[ -f ${pembase}.key ]] && local pembaseKEY_oneline=$(awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' ${pembase}.key)
     [[ -f ${pembase}.crt ]] && local pembaseCRT_oneline=$(awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' ${pembase}.crt)
     [[ -f ${pembase}-chain.crt ]] && local pembaseChainCRT_oneline=$(awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' ${pembase}-chain.crt)
 
-    cat >cert.json <<EOF
+    cat >${pembase}.json <<EOF
 {
-  "certificate": "${pembaseCRT_oneline}",
-  "certificateChain": "${pembaseChainCRT_oneline}",
-  "privateKey": "${pembaseKEY_oneline}"
+  "certificate": "${pembaseCRT_oneline%??}",
+  "certificateChain": "${pembaseChainCRT_oneline%??}",
+  "privateKey": "${pembaseKEY_oneline%??}"
 }
 EOF
 
