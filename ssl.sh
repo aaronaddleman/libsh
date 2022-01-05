@@ -127,5 +127,17 @@ HELP
     }
     echo "DONE"
 
+    awk_cmd="awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}'"
+    [[ -f ${pembase}.key ]] && local pembaseKEY_oneline=$(awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' ${pembase}.key)
+    [[ -f ${pembase}.crt ]] && local pembaseCRT_oneline=$(awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' ${pembase}.crt)
+    [[ -f ${pembase}-chain.crt ]] && local pembaseChainCRT_oneline=$(awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' ${pembase}-chain.crt)
+
+    cat >cert.json <<EOF
+{
+  "certificate": "${pembaseCRT_oneline}",
+  "certificateChain": "${pembaseChainCRT_oneline}",
+  "privateKey": "${pembaseKEY_oneline}"
+}
+EOF
 
 }
