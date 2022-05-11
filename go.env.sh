@@ -12,7 +12,7 @@
 # GOPATH
 ## this will not conflict with goenv because the destination for 
 ## for goenv is $HOME/go/VER/bin
-[ -d $HOME/go -a ! -d $HOME/.goenv ] && export GOPATH="$HOME/go" || libsh__debug "x..could not find $HOME/go"
+[ -d $HOME/go && ! -d $HOME/.goenv ] && export GOPATH="$HOME/go" || libsh__debug "x..could not find $HOME/go"
 [ -d $HOME/go/bin ] && libsh__add_path "post" "$HOME/go/bin"
 
 # GOROOT
