@@ -2,34 +2,48 @@
 
 boot your sh
 
-## install
+## install summary
+
+List of steps for installing libsh:
 
 * git clone https://github.com/aaronaddleman/libsh
-* add libsh to your init files
+* add libsh to your init files:
+  * .zshrc
+  * .zshenv
+* cp .libshrc_example to $HOME/.libshrc
+* (optional) create $HOME/.sh.d/ and any filename.sh or filename.env.sh file will be loaded
+
+## install (copy+paste)
 
 ```
-# .zshrc
-source $HOME/src/libsh/libsh.sh "fn"
-# .zshenv
-source $HOME/src/libsh/libsh.sh "env"
+echo "source $(pwd)/libsh.sh \"fn\"" >> $HOME/.zshrc
+echo "source $(pwd)/libsh.sh \"env\"" >> $HOME/.zshenv
+cp .libshrc_example $HOME/.libshrc
 ```
 
-* add .libshrc from $HOME/src/libsh/.libshrc
-
-This file selects which modules are loaded. This file
-contains lots of comments about each option.
+## install (manual)
 
 ```
-cp $HOME/src/libsh/.libshrc_example $HOME/.libshrc
+source $LIBSH_REPO_PATH/libsh.sh \"fn\"" >> $HOME/.zshrc
+source $LIBSH_REPO_PATH/libsh.sh \"env\"" >> $HOME/.zshenv
+cp .libshrc_example $HOME/.libshrc
 ```
 
-* (optional) create a `$HOME/.sh.d/yourown.env.sh` or `$HOME/.sh.d/yourown.sh`.
+## description of files
 
-LIBSH will load all `yourown.env.sh` or `yourown.sh` files from $HOME/.sh.d
+`libsh.sh`
 
-## config files
+- This is the main file that loads libsh files and environment variables.
 
-### hc vaults
+`.libshrc_example`
+
+- Example configuration file for settings to be used in your shell and libsh.
+
+`$HOME/.config/libsh/hc_vaults.json`
+
+- Configuration file for multiple HashiCorp Vault servers
+
+## hc vaults file
 
 Creating a file like the following allows you to select vaults
 

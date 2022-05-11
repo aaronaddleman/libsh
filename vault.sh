@@ -76,7 +76,10 @@ HELP
     vault token lookup -format=json | jq '.data.policies'
 }
 
-v2aws(){
+# add aliases
+[[ -z $LIBSH_VAULT_DISABLE_ALIASES ]] && alias v2aws=vault_aws_creds
+
+vault_aws_creds(){
     local help=$(cat <<HELP
 ## vault_2_aws
 
@@ -87,7 +90,7 @@ Assumes user has logged into vault and $VAULT_ADDR is setup properly given
 vault path as input, reads from vault and exports AWS_ env vars properly
 
 ...shell
-vault_2_aws path/to/aws/sts/role
+vault_aws_creds path/to/aws/sts/role
 ...
 
 If set the environment variable of LIBSH_USE_VAULT_LOGIN this function
@@ -117,7 +120,7 @@ HELP
     local vault_json=$(vault write -format=json $1 ttl=${VAULT_TTL})
 
     # if there is a problem, exit with error
-    [ $? -ne 0 ] && __exit_with_message "Problem reading from vault or path '$1'"
+    [ $? -ne 0 ] && libsh__exit_with_message "Problem reading from vault or path '$1'"
 
     export AWS_ACCESS_KEY_ID=$(jq -r '.data.access_key' <<< $vault_json)
     export AWS_SECRET_ACCESS_KEY=$(jq -r '.data.secret_key' <<< $vault_json)
@@ -239,10 +242,13 @@ HELP
           )
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
     vault_pre
-    local VAULT_USER=${1:-$USER}
     vault token lookup > /dev/null
     if [ $? != 0 ]; then
+        [ -n $VAULT_METHOD ] && local VAULT_METHOD_VALUE=$VAULT_METHOD
         case "$VAULT_METHOD_VALUE" in
+            oidc)
+                vault login -method=$VAULT_METHOD_VALUE -no-print
+                ;;
             ldap)
                 vault login -method=$VAULT_METHOD_VALUE username=$VAULT_USER
                 ;;
@@ -404,9 +410,9 @@ HELP
     local name=$1
     local selected_record=$(jq -r --arg NAME $name '.[] | select(.name == $NAME)' <<<$(vault_data) )
     export VAULT_ADDR=$(jq -r '.url' <<<$selected_record )
-
-    local VAULT_METHOD=$(jq -r '.auth_method' <<<$selected_record )
-    local VAULT_USER=$(jq -r '.auth_user' <<<$selected_record )
+    export VAULT_VALIDATE=$(jq -r '.validate' <<<$selected_record )
+    export VAULT_METHOD=$(jq -r '.auth_method' <<<$selected_record )
+    export VAULT_USER=$(jq -r '.auth_user' <<<$selected_record )
 
     [ -d $HOME/.config/vault/tokens ] || mkdir -p $HOME/.config/vault/tokens
 }

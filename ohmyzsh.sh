@@ -16,7 +16,7 @@ ohmyzsh_install_spaceship() {
 
 ohmyzsh_like_fish() {
     ohmyzsh_validate
-    [ -d $ZSH_CUSTOM/plugins/zsh-autosuggestion ] || git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+    [ -d $ZSH_CUSTOM/plugins/zsh-autosuggestion ] || git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
     [ -d $ZSH_CUSTOM/plugins/zsh-history-substring-search ] || git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
     [ -d $ZSH_CUSTOM/plugins/zsh-syntax-highlighting ] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
     echo "add these to .zshrc: "
