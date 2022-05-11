@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # load any additional settings
 {
     local dirlist=($(ls $HOME/.sh.d/*.env.sh))

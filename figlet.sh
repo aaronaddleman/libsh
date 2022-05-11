@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 figlet_install_fonts() {
     local help=$(cat <<HELP
 ## figlet_install_fonts

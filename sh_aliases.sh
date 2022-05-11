@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # if exa exists, lets use it instead
 if hash exa 2>/dev/null;then
 	  alias lse="exa --color-scale --time-style=full-iso --git"

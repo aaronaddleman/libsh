@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 terragrunt_install_tgenv() {
     local help=$(cat <<HELP
 ## terragrunt_install_tgenv

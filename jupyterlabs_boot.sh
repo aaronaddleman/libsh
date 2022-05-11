@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # do things before the notebook is created
 sudo apt update && apt install -y curl net-tools zsh git unzip
 # set zsh for the user

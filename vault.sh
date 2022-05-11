@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 vault_validate_env() {
     # check vault command exists
     command -v vault > /dev/null

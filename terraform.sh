@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 terraform_install_tfenv() {
     local help=$(cat <<HELP
 ## terraform_install_tfenv

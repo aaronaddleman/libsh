@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ohmyzsh_validate() {
     [ -z $ZSH_CUSTOM ] && export ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
 }

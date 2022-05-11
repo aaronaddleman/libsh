@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 if [ -d $HOME/.pyenv ]; then
     eval "$(pyenv init --path)"
     # execute the eval

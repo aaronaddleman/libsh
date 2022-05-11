@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # if you have .goenv installed, init
 #[ -d $HOME/.goenv ] && export GOENV_ROOT="$HOME/.goenv"
 #[ -d $HOME/.goenv ] && libsh__add_path "pre" "$GOENV_ROOT/bin"
