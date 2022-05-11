@@ -15,6 +15,8 @@ ssl_show_expire_date domain.com 443
 HELP
           )
     [[ "${1}" =~ "-help"$ ]] && libsh__help_doc "$help" && return 0
+    command -v timeout > /dev/null
+    [[ "${?}" = 0 ]] || libsh__exit_with_message "ERR" "Missing command: timeout. You can install this with brew install coreutils."
     timeout 1 openssl s_client -showcerts -servername $1 -connect $1:$2 2> /dev/null | openssl x509 -noout -enddate
 }
 
