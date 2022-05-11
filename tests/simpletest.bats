@@ -24,6 +24,7 @@ function setup() {
   [ "$LIBSH_status_fn_sh_aliases" = "loaded" ]
   [ "$LIBSH_status_fn_ssh" = "loaded" ]
   [ "$LIBSH_status_fn_vault" = "loaded" ]
+  [ "$LIBSH_status_fn_rust" = "loaded" ]
 }
 
 @test "installing goenv" {
