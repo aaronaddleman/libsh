@@ -54,7 +54,7 @@ HELP
   # set your own font name
   # or use the default
   LOLBAN_FONT_NAME=${LOLBAN_FONT_NAME:-3d}
-  [ -f "$FIGLET_FONT_DIR/$LOLBAN_FONT_FILE" ] || libsh__exit_with_message "ERR" "Missing file 3d.flf. Try figlet_install_fonts"
+  [ -f "$FIGLET_FONT_DIR/$LOLBAN_FONT_FILE" ] || libsh__exit_with_message "ERR" "Missing file ${FIGLET_FONT_DIR}/${LOLBAN_FONT_FILE}. Try figlet_install_fonts"
   command -v figlet > /dev/null 2>&1
   [ "$?" = 0 ] || __exit_with_message "ERR" "Figlet missing"
   command -v lolcat > /dev/null 2>&1
