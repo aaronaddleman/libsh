@@ -18,3 +18,10 @@ HELP
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
     fi
 }
+
+rust_spacemacs() {
+    command -v rustup > /dev/null
+    [ "$?" = "0" ] && rustup component add clippy
+    command -v rls > /dev/null
+    [ "$?" = "0" ] || rustup component add rls
+}
