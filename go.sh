@@ -6,8 +6,8 @@
 [ -d $HOME/.goenv ] && eval "$(goenv init -)"
 
 go_validate_env() {
-    command -v git > /dev/null
-    [ "${?}" = "0" ] || libsh__exit_with_message "Problem" "git command not found"
+    command -v go > /dev/null
+    [ "${?}" = "0" ] || libsh__exit_with_message "Problem" "go command not found"
 }
 
 go_install_for_spacemacs() {
