@@ -3,7 +3,6 @@
 #[ -d $HOME/.goenv ] && libsh__add_path "pre" "$GOENV_ROOT/bin"
 [ ! -z $LIBSH_GOENV_MGMT_PATH ] && libsh__add_path "pre" "$GOROOT/bin"
 [ ! -z $LIBSH_GOENV_MGMT_PATH ] && libsh__add_path "post" "$GOPATH/bin"
-[ -d $HOME/.goenv ] && eval "$(goenv init -)"
 
 go_validate_env() {
     command -v go > /dev/null

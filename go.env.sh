@@ -6,6 +6,7 @@
 # let GOENV manage paths
 [ -d $HOME/.goenv ] && libsh__add_path "pre" "$GOROOT/bin"
 [ -d $HOME/.goenv ] && libsh__add_path "post" "$GOPATH/bin"
+[ -d $HOME/.goenv ] && eval "$(goenv init -)"
 
 # GOPATH
 ## this will not conflict with goenv because the destination for 
